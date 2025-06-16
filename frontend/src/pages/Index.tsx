@@ -26,9 +26,7 @@ const Index = () => {
               <Button variant="outline" asChild>
                 <Link to="/dashboard">Dashboard</Link>
               </Button>
-              <Button asChild>
-                <Link to="/newmodule">Get Started</Link>
-              </Button>
+
             </div>
           </div>
         </div>
@@ -51,12 +49,7 @@ const Index = () => {
                 Start Practicing
               </Link>
             </Button>
-            <Button variant="outline" size="lg" className="gap-2" asChild>
-              <Link to="/newmodule">
-                <Upload className="w-5 h-5" />
-                Upload Materials
-              </Link>
-            </Button>
+
           </div>
         </div>
       </section>
