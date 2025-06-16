@@ -1,2 +1,6 @@
+# fastapi/requirements.txt
 fastapi
-uvicorn
+uvicorn[standard]
+python-dotenv
+langchain
+langchain-google-genai

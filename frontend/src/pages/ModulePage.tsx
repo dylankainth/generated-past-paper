@@ -9,6 +9,8 @@ import { ArrowLeft, FileText, Clock, Target, CheckCircle2, Play, Zap } from 'luc
 const ModulePage = () => {
   const { moduleId } = useParams();
 
+
+
   // Mock data - in real app this would come from API
   const moduleData = {
     'cs101': {
@@ -16,11 +18,7 @@ const ModulePage = () => {
       description: 'Introduction to Programming',
       color: 'from-blue-500 to-cyan-500',
       papers: [
-        { id: 'midterm-2023', name: 'Midterm Exam 2023', questions: 15, completed: 12, difficulty: 'Medium', timeLimit: '90 min' },
-        { id: 'final-2023', name: 'Final Exam 2023', questions: 25, completed: 0, difficulty: 'Hard', timeLimit: '120 min' },
-        { id: 'quiz1-2023', name: 'Quiz 1 - Variables & Data Types', questions: 8, completed: 8, difficulty: 'Easy', timeLimit: '30 min' },
-        { id: 'quiz2-2023', name: 'Quiz 2 - Control Structures', questions: 10, completed: 7, difficulty: 'Medium', timeLimit: '45 min' },
-        { id: 'assignment1', name: 'Assignment 1 - Basic Programming', questions: 12, completed: 12, difficulty: 'Easy', timeLimit: '60 min' }
+
       ]
     },
     'math201': {
@@ -58,7 +56,7 @@ const ModulePage = () => {
     }
   };
 
-  const completionPercentage = (completed: number, total: number) => 
+  const completionPercentage = (completed: number, total: number) =>
     Math.round((completed / total) * 100);
 
   return (
@@ -105,7 +103,7 @@ const ModulePage = () => {
               <div className="text-center">
                 <div className="text-3xl font-bold text-gray-900">
                   {Math.round(
-                    module.papers.reduce((sum, paper) => 
+                    module.papers.reduce((sum, paper) =>
                       sum + completionPercentage(paper.completed, paper.questions), 0
                     ) / module.papers.length
                   )}%
@@ -119,12 +117,12 @@ const ModulePage = () => {
         {/* Papers List */}
         <div className="space-y-6">
           <h2 className="text-2xl font-bold">Practice Papers</h2>
-          
+
           <div className="grid gap-6">
             {module.papers.map((paper) => {
               const progress = completionPercentage(paper.completed, paper.questions);
               const isCompleted = paper.completed === paper.questions;
-              
+
               return (
                 <Card key={paper.id} className="hover:shadow-lg transition-all duration-200">
                   <CardHeader>
@@ -165,7 +163,7 @@ const ModulePage = () => {
                         </span>
                       </div>
                       <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div 
+                        <div
                           className={`bg-gradient-to-r ${module.color} h-2 rounded-full transition-all duration-300`}
                           style={{ width: `${progress}%` }}
                         />

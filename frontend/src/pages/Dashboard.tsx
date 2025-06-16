@@ -11,17 +11,19 @@ import StreakTracker from '@/components/StreakTracker';
 const Dashboard = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [modules, setModules] = useState([]);
+  const [papers, setPapers] = useState([]);
 
   // get modules from /api/modules endpoint using fetch
   useEffect(() => {
     const fetchModules = async () => {
       try {
-        const response = await fetch('/api/modules');
+        const response = await fetch('/api/dashboardData');
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        setModules(data);
+        setModules(data.modules || []);
+        setPapers(data.papers || []);
       } catch (error) {
         console.error('Error fetching modules:', error);
       }
@@ -94,7 +96,7 @@ const Dashboard = () => {
                 </div>
                 <div>
                   <p className="text-sm text-gray-600">Total Papers</p>
-                  <p className="text-2xl font-bold">{modules.reduce((sum, m) => sum + m.papers, 0)}</p>
+                  <p className="text-2xl font-bold">{papers.length}</p>
                 </div>
               </div>
             </CardContent>
@@ -172,16 +174,9 @@ const Dashboard = () => {
 
                   <div className="flex gap-2">
                     <Badge variant="secondary" className="text-xs">
-                      {module.papers} Papers
+                      {module.papers.length} Papers
                     </Badge>
-                    <Badge variant="secondary" className="text-xs">
-                      {module.questions} Questions
-                    </Badge>
-                  </div>
 
-                  <div className="flex items-center gap-2 text-sm text-gray-500">
-                    <Clock className="w-4 h-4" />
-                    Last activity: {module.lastActivity}
                   </div>
 
                   <Button className="w-full gap-2" asChild>
