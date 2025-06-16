@@ -1,11 +1,17 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 from langchain_google_genai import ChatGoogleGenerativeAI
+from fastapi.responses import JSONResponse
+from typing import List
+import os
 
 load_dotenv()
 
 app = FastAPI()
+
+UPLOAD_DIR = "uploaded_files"
+os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 # Allow frontend (usually Vite dev server runs on port 5173)
 app.add_middleware(
@@ -38,3 +44,35 @@ def generate_plan(request, goal: str):
         return {"plan": llm.invoke(prompt)}
     except Exception as e:
         return {"error": str(e)}
+
+
+@app.get("/api/modules")
+def get_modules():
+    return [
+        {
+            'id': 'cs101',
+            'name': 'Computer Science 201',
+            'description': 'Introduction to Programming',
+            'papers': 12,
+            'questions': 156,
+            'lastActivity': '2 days ago',
+            'progress': 75,
+            'color': 'from-blue-500 to-cyan-500'
+        }
+    ]
+
+# the new module endpoint has a formdata body with a multiple files;
+
+
+@app.post("/api/newModule")
+async def upload_files(files: List[UploadFile] = File(...)):
+    saved_files = []
+
+    for file in files:
+        file_path = os.path.join(UPLOAD_DIR, file.filename)
+        with open(file_path, "wb") as f:
+            content = await file.read()
+            f.write(content)
+        saved_files.append(file.filename)
+
+    return JSONResponse(content={"message": "Files uploaded successfully", "files": saved_files})

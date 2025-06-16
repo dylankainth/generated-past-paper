@@ -13,7 +13,30 @@ const NewModule = () => {
   };
 
   const handleFilesSubmit = () => {
-    // Handle the submission of uploaded file
+    // send the files to the backend
+    const formData = new FormData();
+    uploadedFiles.forEach(file => {
+      formData.append('files', file);
+    }
+
+    );
+    fetch('/api/newModule', {
+      method: 'POST',
+      body: formData,
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      }
+      )
+      .then(data => {
+        console.log('Files uploaded successfully:', data);
+        // Optionally, redirect to the dashboard or show a success message
+      }
+      )
+
 
   }
 

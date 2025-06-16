@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -10,49 +10,26 @@ import StreakTracker from '@/components/StreakTracker';
 
 const Dashboard = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [modules, setModules] = useState([]);
 
-  const modules = [
-    {
-      id: 'cs101',
-      name: 'Computer Science 101',
-      description: 'Introduction to Programming',
-      papers: 12,
-      questions: 156,
-      lastActivity: '2 days ago',
-      progress: 75,
-      color: 'from-blue-500 to-cyan-500'
-    },
-    {
-      id: 'math201',
-      name: 'Mathematics 201',
-      description: 'Calculus and Linear Algebra',
-      papers: 8,
-      questions: 89,
-      lastActivity: '1 day ago',
-      progress: 60,
-      color: 'from-purple-500 to-pink-500'
-    },
-    {
-      id: 'phys101',
-      name: 'Physics 101',
-      description: 'Classical Mechanics',
-      papers: 15,
-      questions: 203,
-      lastActivity: '3 days ago',
-      progress: 45,
-      color: 'from-emerald-500 to-teal-500'
-    },
-    {
-      id: 'chem102',
-      name: 'Chemistry 102',
-      description: 'Organic Chemistry Basics',
-      papers: 6,
-      questions: 67,
-      lastActivity: '1 week ago',
-      progress: 30,
-      color: 'from-orange-500 to-red-500'
-    }
-  ];
+  // get modules from /api/modules endpoint using fetch
+  useEffect(() => {
+    const fetchModules = async () => {
+      try {
+        const response = await fetch('/api/modules');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        setModules(data);
+      } catch (error) {
+        console.error('Error fetching modules:', error);
+      }
+    };
+
+    fetchModules();
+  }, []);
+
 
   const filteredModules = modules.filter(module =>
     module.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
