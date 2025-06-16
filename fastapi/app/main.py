@@ -1,4 +1,4 @@
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, UploadFile, Form
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 from langchain_google_genai import ChatGoogleGenerativeAI
@@ -65,11 +65,17 @@ def get_modules():
 
 
 @app.post("/api/newModule")
-async def upload_files(files: List[UploadFile] = File(...)):
+async def upload_files(
+    module: str = Form(...),
+    files: List[UploadFile] = File(...)
+):
+    module_dir = os.path.join(UPLOAD_DIR, module, "files")
+    os.makedirs(module_dir, exist_ok=True)
+
     saved_files = []
 
     for file in files:
-        file_path = os.path.join(UPLOAD_DIR, file.filename)
+        file_path = os.path.join(module_dir, file.filename)
         with open(file_path, "wb") as f:
             content = await file.read()
             f.write(content)
