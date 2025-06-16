@@ -78,15 +78,10 @@ const Dashboard = () => {
                 </div>
               </Link>
             </div>
-            <div className="flex items-center gap-4">
+            {/* <div className="flex items-center gap-4">
               <StreakTracker />
-              <Button className="gap-2" asChild>
-                <Link to="/newmodule">
-                  <Plus className="w-4 h-4" />
-                  New Module
-                </Link>
-              </Button>
-            </div>
+              
+            </div> */}
           </div>
         </div>
       </header>
@@ -156,10 +151,8 @@ const Dashboard = () => {
             </CardContent>
           </Card>
         </div>
-
-        {/* Search */}
-        <div className="mb-8">
-          <div className="relative max-w-md">
+        <div className="mb-8 flex justify-between items-center">
+          <div className="relative max-w-md flex-1">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
             <Input
               placeholder="Search modules..."
@@ -167,6 +160,14 @@ const Dashboard = () => {
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-10"
             />
+          </div>
+          <div className="ml-4">
+            <Button className="gap-2" asChild>
+              <Link to="/newmodule">
+                <Plus className="w-4 h-4" />
+                New Module
+              </Link>
+            </Button>
           </div>
         </div>
 
@@ -186,12 +187,12 @@ const Dashboard = () => {
                     <span className="font-medium">{module.progress}%</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div 
+                    <div
                       className={`bg-gradient-to-r ${module.color} h-2 rounded-full transition-all duration-300`}
                       style={{ width: `${module.progress}%` }}
                     />
                   </div>
-                  
+
                   <div className="flex gap-2">
                     <Badge variant="secondary" className="text-xs">
                       {module.papers} Papers
