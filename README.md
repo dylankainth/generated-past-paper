@@ -1,73 +1,59 @@
-# Welcome to your Lovable project
+# 🧠 Full-Stack Vite + Django Project
 
-## Project info
+This is a full-stack web application with:
 
-**URL**: https://lovable.dev/projects/f28570ff-b196-4ac7-9b50-405621c2257d
+- **Frontend**: Vite + TypeScript + Tailwind CSS
+- **Backend**: Django (Python)
+- **Deployment**: Google Cloud Run (via Docker)
 
-## How can I edit this code?
+---
 
-There are several ways of editing your application.
+## 🚀 Project Structure
 
-**Use Lovable**
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/f28570ff-b196-4ac7-9b50-405621c2257d) and start prompting.
+GENERATED-PAST-PAPER-5/
+│
+├── backend/ # Django project
+├── src/ # Frontend source (Vite)
+├── venv/ # Python virtual environment (optional for local dev)
+├── Dockerfile.backend # Docker config for Django
+├── Dockerfile.frontend # Docker config for Vite
+├── requirements.txt # Python dependencies
+├── package.json # Frontend dependencies
+├── cloudbuild.yaml # Optional GCP CI/CD config
+└── README.md # You're here
 
-Changes made via Lovable will be committed automatically to this repo.
+yaml
+Copy
+Edit
 
-**Use your preferred IDE**
+---
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## 🧑‍💻 Development Setup
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### 1. Frontend (Vite + Tailwind)
 
-Follow these steps:
+```bash
+# Install dependencies
+npm install
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Run the development server
 npm run dev
-```
+Runs at: http://localhost:5173
 
-**Edit a file directly in GitHub**
+If you're calling the backend, proxy config should be in vite.config.ts.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+2. Backend (Django)
+bash
+Copy
+Edit
+# Set up virtual environment
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
 
-**Use GitHub Codespaces**
+# Install dependencies
+pip install -r requirements.txt
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/f28570ff-b196-4ac7-9b50-405621c2257d) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+# Run the Django dev server
+python backend/manage.py runserver
+Runs at: http://localhost:8000
