@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -7,6 +6,8 @@ import UploadSection from '@/components/UploadSection';
 
 const NewModule = () => {
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+  const [moduleCode, setModuleCode] = useState("");
+  const [moduleName, setModuleName] = useState("");
 
   const handleFileUpload = (files: File[]) => {
     setUploadedFiles(prev => [...prev, ...files]);
@@ -15,11 +16,11 @@ const NewModule = () => {
   const handleFilesSubmit = () => {
     // send the files to the backend
     const formData = new FormData();
+    formData.append("module", moduleCode);
+    formData.append("module_name", moduleName);
     uploadedFiles.forEach(file => {
-      formData.append('files', file);
-    }
-
-    );
+      formData.append("files", file);
+    });
     fetch('/api/newModule', {
       method: 'POST',
       body: formData,
@@ -68,7 +69,34 @@ const NewModule = () => {
       </header>
 
       <div className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto space-y-8">
+        <div className="max-w-4xl mx-auto space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Module Name
+            </label>
+            <input
+              type="text"
+              value={moduleName}
+              onChange={(e) => setModuleName(e.target.value)}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              placeholder="e.g. Introduction to AI"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Module Code
+            </label>
+            <input
+              type="text"
+              value={moduleCode}
+              onChange={(e) => setModuleCode(e.target.value)}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              placeholder="e.g. CS101"
+            />
+          </div>
+        </div>
+
+        <div className="max-w-4xl mx-auto space-y-8 mt-8">
           <div className="text-center">
             <h1 className="text-3xl font-bold mb-4">Create a New Study Module</h1>
             <p className="text-gray-600 text-lg">
