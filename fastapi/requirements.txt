@@ -4,3 +4,4 @@ uvicorn[standard]
 python-dotenv
 langchain
 langchain-google-genai
+python-multipart
