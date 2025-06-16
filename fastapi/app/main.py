@@ -22,6 +22,59 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+modules = [
+    {
+        "id": "cs101",
+        "name": "Computer Science 201",
+        "description": "Introduction to Programming",
+        "progress": 75,
+        "color": "from-blue-500 to-cyan-500",
+        "papers": [
+            {
+                "id": "midterm-2023",
+                "name": "Midterm Exam 2023",
+                "questions": [
+                    {
+                        "id": 1,
+                        "question": "What is the time complexity of binary search?",
+                        "options": ["O(n)", "O(log n)", "O(n²)", "O(1)"],
+                        "correctAnswer": 1,
+                        "explanation": "Binary search divides the search space in half with each iteration, resulting in O(log n) time complexity."
+                    },
+                    {
+                        "id": 2,
+                        "question": "Which data structure uses LIFO (Last In, First Out) principle?",
+                        "options": ["Queue", "Stack", "Array", "Linked List"],
+                        "correctAnswer": 1,
+                        "explanation": "A stack follows the LIFO principle where the last element added is the first one to be removed."
+                    },
+                    {
+                        "id": 3,
+                        "question": "What does API stand for?",
+                        "options": [
+                            "Application Programming Interface",
+                            "Advanced Programming Instructions",
+                            "Automated Program Integration",
+                            "Application Process Integration"
+                        ],
+                        "correctAnswer": 0,
+                        "explanation": "API stands for Application Programming Interface, which allows different software applications to communicate with each other."
+                    }
+                ],
+                "completed": 12,
+                "difficulty": "Medium",
+                "timeLimit": "90 min"
+            },
+
+        ]
+    }
+]
+
+
+papers = [{
+    'id': 'paper1'
+}]
+
 
 @app.get("/api/hello")
 async def hello():
@@ -46,22 +99,12 @@ def generate_plan(request, goal: str):
         return {"error": str(e)}
 
 
-@app.get("/api/modules")
-def get_modules():
-    return [
-        {
-            'id': 'cs101',
-            'name': 'Computer Science 201',
-            'description': 'Introduction to Programming',
-            'papers': 12,
-            'questions': 156,
-            'lastActivity': '2 days ago',
-            'progress': 75,
-            'color': 'from-blue-500 to-cyan-500'
-        }
-    ]
-
-# the new module endpoint has a formdata body with a multiple files;
+@app.get("/api/dashboardData")
+def get_dashboard_data():
+    return {
+        "modules": modules,
+        "totalModules": len(modules)
+    }
 
 
 @app.post("/api/newModule")

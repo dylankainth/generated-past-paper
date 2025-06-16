@@ -1,0 +1,23 @@
+# docker-compose.yml
+
+version: '3.8'
+
+services:
+  # The FastAPI Backend Service
+  api:
+    build: ./fastapi
+    restart: unless-stopped
+    env_file:
+      - ./.env # This loads the GEMINI_API_KEY from the .env file
+    expose:
+      - 8000 # Expose port 8000 internally, but not to the host machine
+
+  # The Vite/React Frontend Service
+  frontend:
+    build: ./frontend
+    restart: unless-stopped
+    ports:
+      # Map port 5173 on your local machine to port 80 in the container
+      - "5173:80"
+    depends_on:
+      - api # This ensures the 'api' service starts before the 'frontend'
