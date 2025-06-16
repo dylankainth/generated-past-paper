@@ -64,7 +64,7 @@ const Index = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <Card className="text-center p-6">
             <CardContent className="pt-6">
-              <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-yellow-200 rounded-2xl flex items-center justify-center mx-auto mb-4">
                 <FileText className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-xl font-semibold mb-2">Upload Materials</h3>
