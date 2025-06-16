@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -12,56 +12,90 @@ const PaperPage = () => {
   const [selectedAnswers, setSelectedAnswers] = useState<{ [key: number]: number }>({});
   const [showResults, setShowResults] = useState(false);
 
-  // Mock data - in real app this would come from API
-  const paperData = {
-    'midterm-2023': {
-      name: 'Midterm Exam 2023',
-      moduleId: 'cs101',
-      moduleName: 'Computer Science 101',
-      timeLimit: '90 min',
-      difficulty: 'Medium',
-      questions:
-        [
-          {
-            "id": 1,
-            "question": "What is the time complexity of binary search?",
-            "options": [
-              "O(n)",
-              "O(log n)",
-              "O(n²)",
-              "O(1)"
-            ],
-            "correctAnswer": 1,
-            "explanation": "Binary search divides the search space in half with each iteration, resulting in O(log n) time complexity."
-          },
-          {
-            "id": 2,
-            "question": "Which data structure uses LIFO (Last In, First Out) principle?",
-            "options": [
-              "Queue",
-              "Stack",
-              "Array",
-              "Linked List"
-            ],
-            "correctAnswer": 1,
-            "explanation": "A stack follows the LIFO principle where the last element added is the first one to be removed."
-          },
-          {
-            "id": 3,
-            "question": "What does API stand for?",
-            "options": [
-              "Application Programming Interface",
-              "Advanced Programming Instructions",
-              "Automated Program Integration",
-              "Application Process Integration"
-            ],
-            "correctAnswer": 0,
-            "explanation": "API stands for Application Programming Interface, which allows different software applications to communicate with each other."
-          }
-        ]
+  const [allData, setAllData] = useState([]);
 
-    }
-  };
+  // get modules from /api/modules endpoint using fetch
+  useEffect(() => {
+    const fetchModules = async () => {
+      try {
+        const response = await fetch('/api/dashboardData');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+
+        setAllData(data.modules || []);
+
+      } catch (error) {
+        console.error('Error fetching modules:', error);
+      }
+    };
+
+    fetchModules();
+  }, []);
+
+  // build a lookup of papers from the loaded modules
+  const paperData = allData.reduce((acc, mod) => {
+    mod.papers.forEach((paper) => {
+      acc[paper.id] = {
+        ...paper,
+        moduleId: mod.id,
+        moduleName: mod.name,
+      }
+    })
+    return acc
+  }, {})
+
+  // Mock data - in real app this would come from API
+  // const paperData = {
+  //   'midterm-2023': {
+  //     name: 'Midterm Exam 2023',
+  //     moduleId: 'cs101',
+  //     moduleName: 'Computer Science 101',
+  //     timeLimit: '90 min',
+  //     difficulty: 'Medium',
+  //     questions:
+  //       [
+  //         {
+  //           "id": 1,
+  //           "question": "What is the time complexity of binary search?",
+  //           "options": [
+  //             "O(n)",
+  //             "O(log n)",
+  //             "O(n²)",
+  //             "O(1)"
+  //           ],
+  //           "correctAnswer": 1,
+  //           "explanation": "Binary search divides the search space in half with each iteration, resulting in O(log n) time complexity."
+  //         },
+  //         {
+  //           "id": 2,
+  //           "question": "Which data structure uses LIFO (Last In, First Out) principle?",
+  //           "options": [
+  //             "Queue",
+  //             "Stack",
+  //             "Array",
+  //             "Linked List"
+  //           ],
+  //           "correctAnswer": 1,
+  //           "explanation": "A stack follows the LIFO principle where the last element added is the first one to be removed."
+  //         },
+  //         {
+  //           "id": 3,
+  //           "question": "What does API stand for?",
+  //           "options": [
+  //             "Application Programming Interface",
+  //             "Advanced Programming Instructions",
+  //             "Automated Program Integration",
+  //             "Application Process Integration"
+  //           ],
+  //           "correctAnswer": 0,
+  //           "explanation": "API stands for Application Programming Interface, which allows different software applications to communicate with each other."
+  //         }
+  //       ]
+
+  //   }
+  // };
 
 
   const paper = paperData[paperId as keyof typeof paperData];
@@ -71,6 +105,8 @@ const PaperPage = () => {
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold mb-4">Paper Not Found</h1>
+          {JSON.stringify(allData)}
+
           <Button asChild>
             <Link to="/dashboard">Back to Dashboard</Link>
           </Button>
@@ -117,6 +153,8 @@ const PaperPage = () => {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
         <header className="bg-white/80 backdrop-blur-sm border-b sticky top-0 z-50">
+
+
           <div className="container mx-auto px-4 py-4">
             <div className="flex items-center gap-3">
               <Button variant="ghost" size="sm" asChild>
@@ -135,6 +173,8 @@ const PaperPage = () => {
             </div>
           </div>
         </header>
+
+
 
         <div className="container mx-auto px-4 py-8">
           <Card className="max-w-4xl mx-auto">
@@ -324,6 +364,7 @@ const PaperPage = () => {
                 </button>
               ))}
             </div>
+
 
             {currentQuestion < totalQuestions - 1 ? (
               <Button

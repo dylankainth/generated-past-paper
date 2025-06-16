@@ -102,19 +102,7 @@ const Dashboard = () => {
             </CardContent>
           </Card>
 
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center">
-                  <Target className="w-6 h-6 text-emerald-600" />
-                </div>
-                <div>
-                  <p className="text-sm text-gray-600">Questions Practiced</p>
-                  <p className="text-2xl font-bold">{modules.reduce((sum, m) => sum + m.questions, 0)}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+
 
           <Card>
             <CardContent className="p-6">

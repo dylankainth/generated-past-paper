@@ -35,8 +35,11 @@ const NewModule = () => {
       .then(data => {
         console.log('Files uploaded successfully:', data);
         // Optionally, redirect to the dashboard or show a success message
-      }
-      )
+      }).then(() => {
+
+        // send the user to the dashboard
+        window.location.href = "/dashboard";
+      })
 
 
   }
