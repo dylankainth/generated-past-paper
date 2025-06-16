@@ -9,7 +9,7 @@ import { ArrowLeft, Clock, CheckCircle2, XCircle, Zap, RotateCcw } from 'lucide-
 const PaperPage = () => {
   const { paperId } = useParams();
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [selectedAnswers, setSelectedAnswers] = useState<{[key: number]: number}>({});
+  const [selectedAnswers, setSelectedAnswers] = useState<{ [key: number]: number }>({});
   const [showResults, setShowResults] = useState(false);
 
   // Mock data - in real app this would come from API
@@ -20,34 +20,52 @@ const PaperPage = () => {
       moduleName: 'Computer Science 101',
       timeLimit: '90 min',
       difficulty: 'Medium',
-      questions: [
-        {
-          id: 1,
-          question: "What is the time complexity of binary search?",
-          options: ["O(n)", "O(log n)", "O(n²)", "O(1)"],
-          correctAnswer: 1,
-          explanation: "Binary search divides the search space in half with each iteration, resulting in O(log n) time complexity."
-        },
-        {
-          id: 2,
-          question: "Which data structure uses LIFO (Last In, First Out) principle?",
-          options: ["Queue", "Stack", "Array", "Linked List"],
-          correctAnswer: 1,
-          explanation: "A stack follows the LIFO principle where the last element added is the first one to be removed."
-        },
-        {
-          id: 3,
-          question: "What does API stand for?",
-          options: ["Application Programming Interface", "Advanced Programming Instructions", "Automated Program Integration", "Application Process Integration"],
-          correctAnswer: 0,
-          explanation: "API stands for Application Programming Interface, which allows different software applications to communicate with each other."
-        }
-      ]
+      questions:
+        [
+          {
+            "id": 1,
+            "question": "What is the time complexity of binary search?",
+            "options": [
+              "O(n)",
+              "O(log n)",
+              "O(n²)",
+              "O(1)"
+            ],
+            "correctAnswer": 1,
+            "explanation": "Binary search divides the search space in half with each iteration, resulting in O(log n) time complexity."
+          },
+          {
+            "id": 2,
+            "question": "Which data structure uses LIFO (Last In, First Out) principle?",
+            "options": [
+              "Queue",
+              "Stack",
+              "Array",
+              "Linked List"
+            ],
+            "correctAnswer": 1,
+            "explanation": "A stack follows the LIFO principle where the last element added is the first one to be removed."
+          },
+          {
+            "id": 3,
+            "question": "What does API stand for?",
+            "options": [
+              "Application Programming Interface",
+              "Advanced Programming Instructions",
+              "Automated Program Integration",
+              "Application Process Integration"
+            ],
+            "correctAnswer": 0,
+            "explanation": "API stands for Application Programming Interface, which allows different software applications to communicate with each other."
+          }
+        ]
+
     }
   };
 
+
   const paper = paperData[paperId as keyof typeof paperData];
-  
+
   if (!paper) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 flex items-center justify-center">
@@ -95,7 +113,7 @@ const PaperPage = () => {
   if (showResults) {
     const score = getScore();
     const percentage = Math.round((score / totalQuestions) * 100);
-    
+
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
         <header className="bg-white/80 backdrop-blur-sm border-b sticky top-0 z-50">
@@ -147,12 +165,12 @@ const PaperPage = () => {
                 {paper.questions.map((question, index) => {
                   const userAnswer = selectedAnswers[index];
                   const isCorrect = userAnswer === question.correctAnswer;
-                  
+
                   return (
                     <Card key={question.id} className={`border-l-4 ${isCorrect ? 'border-l-green-500' : 'border-l-red-500'}`}>
                       <CardContent className="p-4">
                         <div className="flex items-start gap-3 mb-3">
-                          {isCorrect ? 
+                          {isCorrect ?
                             <CheckCircle2 className="w-5 h-5 text-green-600 mt-1 flex-shrink-0" /> :
                             <XCircle className="w-5 h-5 text-red-600 mt-1 flex-shrink-0" />
                           }
@@ -161,15 +179,14 @@ const PaperPage = () => {
                             <p className="mb-3">{question.question}</p>
                             <div className="space-y-2">
                               {question.options.map((option, optIndex) => (
-                                <div 
+                                <div
                                   key={optIndex}
-                                  className={`p-2 rounded border ${
-                                    optIndex === question.correctAnswer 
-                                      ? 'bg-green-100 border-green-300 text-green-800'
-                                      : optIndex === userAnswer && userAnswer !== question.correctAnswer
+                                  className={`p-2 rounded border ${optIndex === question.correctAnswer
+                                    ? 'bg-green-100 border-green-300 text-green-800'
+                                    : optIndex === userAnswer && userAnswer !== question.correctAnswer
                                       ? 'bg-red-100 border-red-300 text-red-800'
                                       : 'bg-gray-50 border-gray-200'
-                                  }`}
+                                    }`}
                                 >
                                   {String.fromCharCode(65 + optIndex)}. {option}
                                   {optIndex === question.correctAnswer && (
@@ -246,7 +263,7 @@ const PaperPage = () => {
                 </span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
-                <div 
+                <div
                   className="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full transition-all duration-300"
                   style={{ width: `${((currentQuestion + 1) / totalQuestions) * 100}%` }}
                 />
@@ -266,11 +283,10 @@ const PaperPage = () => {
                   <button
                     key={index}
                     onClick={() => handleAnswerSelect(index)}
-                    className={`w-full p-4 text-left border-2 rounded-lg transition-all duration-200 ${
-                      selectedAnswers[currentQuestion] === index
-                        ? 'border-blue-500 bg-blue-50'
-                        : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
-                    }`}
+                    className={`w-full p-4 text-left border-2 rounded-lg transition-all duration-200 ${selectedAnswers[currentQuestion] === index
+                      ? 'border-blue-500 bg-blue-50'
+                      : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                      }`}
                   >
                     <span className="font-medium">
                       {String.fromCharCode(65 + index)}.
@@ -297,13 +313,12 @@ const PaperPage = () => {
                 <button
                   key={index}
                   onClick={() => setCurrentQuestion(index)}
-                  className={`w-8 h-8 rounded-full text-sm font-medium transition-all duration-200 ${
-                    index === currentQuestion
-                      ? 'bg-blue-600 text-white'
-                      : selectedAnswers[index] !== undefined
+                  className={`w-8 h-8 rounded-full text-sm font-medium transition-all duration-200 ${index === currentQuestion
+                    ? 'bg-blue-600 text-white'
+                    : selectedAnswers[index] !== undefined
                       ? 'bg-green-100 text-green-700 border border-green-300'
                       : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                  }`}
+                    }`}
                 >
                   {index + 1}
                 </button>

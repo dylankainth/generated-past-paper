@@ -1,15 +1,14 @@
-from fastapi import Form
-from fastapi import Request
-from fastapi import FastAPI, File, UploadFile, Form
+from fastapi import FastAPI, Form, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 from fastapi.responses import JSONResponse
 from typing import List
 import os
-import google.generativeai as genai
+from google import genai
 from google.genai import types
 import pathlib
 import httpx
+import random
 
 load_dotenv()
 
@@ -86,24 +85,6 @@ async def hello():
     return {"message": "Hello from FastAPI"}
 
 
-@app.get("/api/plan")
-def generate_plan(request, goal: str):
-    api_key = "AIzaSyCM1H-QJnCRaytFVaW6XsjO1erGT3yheNA"
-    if not api_key:
-        return {"error": "Missing GEMINI_API_KEY in .env"}
-
-    llm = ChatGoogleGenerativeAI(
-        model="gemini-2.0-flash",
-        google_api_key=api_key
-    )
-
-    prompt = f"Create a 3-day meal and workout plan for a student with the goal: {goal}"
-    try:
-        return {"plan": llm.invoke(prompt)}
-    except Exception as e:
-        return {"error": str(e)}
-
-
 @app.get("/api/dashboardData")
 def get_dashboard_data():
     return {
@@ -131,39 +112,59 @@ async def new_module(
         with open(file_path, "wb") as f:
             f.write(content)
 
-    client = genai.Client()
+    # configure GenAI client with API key from .env
+    client = genai.Client(api_key="AIzaSyCM1H-QJnCRaytFVaW6XsjO1erGT3yheNA")
 
-    filepath = pathlib.Path("uploaded_files", module, files[0].filename)
+    # define the text prompt first
+    prompt = "Generate 8 exam-style questions with answers from the files uploaded and return it ONLY ONE JSON OBJECT and nothing else for us to extract the data; reply as [{question: 'What is the time complexity of binary search?', options: ['O(n)', 'O(log n)', 'O(n²)', 'O(1)'], correctAnswer: 1, explanation: 'Binary search divides the search space in half with each iteration, resulting in O(log n) time complexity.'}, {question: 'Which data structure uses LIFO (Last In, First Out) principle?', options: ['Queue', 'Stack', 'Array', 'Linked List'], correctAnswer: 1, explanation: 'A stack follows the LIFO principle where the last element added is the first one to be removed.'}, {question: 'What does API stand for?', options: ['Application Programming Interface', 'Advanced Programming Instructions', 'Automated Program Integration', 'Application Process Integration'], correctAnswer: 0, explanation: 'API stands for Application Programming Interface, which allows different software applications to communicate with each other.'}] etc"
 
-    contents = [
+    filepath = pathlib.Path(UPLOAD_DIR, "abc12322",
+                            "Lecture02 - Java, Linked Lists.pdf")
 
-        types.Content(
-            type=types.Content.Type.TEXT,
-            text=prompt
-        )
-    ]
-
-    for file in files:
-        contents.append(
-            types.Content(
-                type=types.Content.Type.FILE,
-                file=types.File(
-                    name=file.filename,
-                    mime_type=file.content_type,
-                    data=httpx.get(filepath).read()
-                )
-            )
-        )
-
-    prompt = "Generate 5 exam-style questions with answers from the files uplooaded and return it in a json format for us to extract the data"
     response = client.models.generate_content(
         model="gemini-2.0-flash",
-        contents=content
-    )
+        contents=[
+            types.Part.from_bytes(
+                data=filepath.read_bytes(),
+                mime_type='application/pdf',
+            ),
+            prompt])
 
-    print(response)
+    # get text response from the model and remove "```json" and "```" from the response
+    text_response = response.text.strip()
+    if text_response.startswith("```json"):
+        text_response = text_response[7:].strip()
+    if text_response.endswith("```"):
+        text_response = text_response[:-3].strip()
+    # print the response as json
+    try:
+        # Use eval to convert string to list of dicts
+        questions = eval(text_response)
 
-    return JSONResponse(content={"message": "Module processing is not implemented yet."})
+        # put this in the modules arrray
+        new_module = {
+            "id": module,
+            "name": module,
+            "description": "Newly created module",
+            "progress": 0,
+            "color": "from-blue-500 to-cyan-500",
+            "papers": [
+                {
+                    "id": f"{module}-paper" + str(random.randint(1000, 9999)),
+                    "name": f"{module} Paper" + str(random.randint(1000, 9999)),
+                    "questions": questions,
+                    "completed": 0,
+                    "difficulty": "Medium",
+                    "timeLimit": "60 min"
+                }
+            ]
+        }
+        modules.append(new_module)
+
+        return JSONResponse(content={"message": "Module processed", "questions": questions}, status_code=200)
+
+    except Exception as e:
+        return JSONResponse(content={"error": "Failed to parse response", "details": str(e)}, status_code=500)
 
     # # Create module directory
     # module_dir = os.path.join(UPLOAD_DIR, module)

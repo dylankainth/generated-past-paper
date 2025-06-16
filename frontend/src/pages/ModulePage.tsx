@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -8,31 +8,34 @@ import { ArrowLeft, FileText, Clock, Target, CheckCircle2, Play, Zap } from 'luc
 
 const ModulePage = () => {
   const { moduleId } = useParams();
+  const [module, setModule] = useState(null);
 
+  // get modules from /api/modules endpoint using fetch
+  useEffect(() => {
+    const fetchModules = async () => {
+      try {
+        const response = await fetch('/api/dashboardData');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        console.log(data);
 
+        for (const mod of data.modules) {
+          if (mod.id == moduleId) {
+            setModule(mod);
+            break;
+          }
+        }
 
-  // Mock data - in real app this would come from API
-  const moduleData = {
-    'cs101': {
-      name: 'Computer Science 101',
-      description: 'Introduction to Programming',
-      color: 'from-blue-500 to-cyan-500',
-      papers: [
+      } catch (error) {
+        console.error('Error fetching modules:', error);
+      }
+    };
 
-      ]
-    },
-    'math201': {
-      name: 'Mathematics 201',
-      description: 'Calculus and Linear Algebra',
-      color: 'from-purple-500 to-pink-500',
-      papers: [
-        { id: 'calc-midterm', name: 'Calculus Midterm', questions: 20, completed: 15, difficulty: 'Hard', timeLimit: '120 min' },
-        { id: 'linear-quiz', name: 'Linear Algebra Quiz', questions: 12, completed: 8, difficulty: 'Medium', timeLimit: '60 min' }
-      ]
-    }
-  };
+    fetchModules();
+  }, []);
 
-  const module = moduleData[moduleId as keyof typeof moduleData];
 
   if (!module) {
     return (
@@ -94,22 +97,6 @@ const ModulePage = () => {
                 <div className="text-3xl font-bold text-gray-900">{module.papers.length}</div>
                 <div className="text-sm text-gray-600">Total Papers</div>
               </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-gray-900">
-                  {module.papers.reduce((sum, paper) => sum + paper.questions, 0)}
-                </div>
-                <div className="text-sm text-gray-600">Total Questions</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-gray-900">
-                  {Math.round(
-                    module.papers.reduce((sum, paper) =>
-                      sum + completionPercentage(paper.completed, paper.questions), 0
-                    ) / module.papers.length
-                  )}%
-                </div>
-                <div className="text-sm text-gray-600">Average Progress</div>
-              </div>
             </div>
           </CardContent>
         </Card>
@@ -120,8 +107,7 @@ const ModulePage = () => {
 
           <div className="grid gap-6">
             {module.papers.map((paper) => {
-              const progress = completionPercentage(paper.completed, paper.questions);
-              const isCompleted = paper.completed === paper.questions;
+
 
               return (
                 <Card key={paper.id} className="hover:shadow-lg transition-all duration-200">
@@ -130,7 +116,7 @@ const ModulePage = () => {
                       <div className="flex-1">
                         <CardTitle className="text-xl mb-2 flex items-center gap-2">
                           {paper.name}
-                          {isCompleted && <CheckCircle2 className="w-5 h-5 text-green-600" />}
+
                         </CardTitle>
                         <div className="flex gap-2 mb-3">
                           <Badge className={getDifficultyColor(paper.difficulty)}>
@@ -140,10 +126,7 @@ const ModulePage = () => {
                             <Clock className="w-3 h-3" />
                             {paper.timeLimit}
                           </Badge>
-                          <Badge variant="outline" className="gap-1">
-                            <FileText className="w-3 h-3" />
-                            {paper.questions} Questions
-                          </Badge>
+
                         </div>
                       </div>
                       <Button className="gap-2" asChild>
@@ -156,24 +139,9 @@ const ModulePage = () => {
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-3">
-                      <div className="flex justify-between items-center text-sm">
-                        <span className="text-gray-600">Progress</span>
-                        <span className="font-medium">
-                          {paper.completed}/{paper.questions} ({progress}%)
-                        </span>
-                      </div>
-                      <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div
-                          className={`bg-gradient-to-r ${module.color} h-2 rounded-full transition-all duration-300`}
-                          style={{ width: `${progress}%` }}
-                        />
-                      </div>
-                      {isCompleted && (
-                        <div className="flex items-center gap-2 text-green-600 text-sm">
-                          <CheckCircle2 className="w-4 h-4" />
-                          Completed! Well done!
-                        </div>
-                      )}
+
+
+
                     </div>
                   </CardContent>
                 </Card>
