@@ -12,12 +12,12 @@ const Index = () => {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center">
+              <div className="w-10 h-10 bg-[#FBBC04] rounded-xl flex items-center justify-center">
                 <Zap className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  StudyAI
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-[#4285F4] to-[#34A853] bg-clip-text text-transparent">
+                  Scinapse
                 </h1>
                 <p className="text-sm text-gray-600">AI-Powered Practice Questions</p>
               </div>
@@ -37,7 +37,7 @@ const Index = () => {
       {/* Hero Section */}
       <section className="container mx-auto px-4 py-20">
         <div className="text-center max-w-4xl mx-auto">
-          <h1 className="text-5xl font-bold mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          <h1 className="text-5xl font-bold mb-6 bg-gradient-to-r from-[#4285F4] to-[#34A853] bg-clip-text text-transparent">
             Transform Your Study Materials into Practice Questions
           </h1>
           <p className="text-xl text-gray-600 mb-8 leading-relaxed">
@@ -64,14 +64,14 @@ const Index = () => {
       {/* Features Section */}
       <section className="container mx-auto px-4 py-16">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-4">How StudyAI Works</h2>
+          <h2 className="text-3xl font-bold mb-4">How Scinapse Works</h2>
           <p className="text-gray-600 text-lg">Three simple steps to better exam preparation</p>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <Card className="text-center p-6">
             <CardContent className="pt-6">
-              <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-[#4285F4] rounded-2xl flex items-center justify-center mx-auto mb-4">
                 <FileText className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-xl font-semibold mb-2">Upload Materials</h3>
@@ -81,7 +81,7 @@ const Index = () => {
 
           <Card className="text-center p-6">
             <CardContent className="pt-6">
-              <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-[#34A853] rounded-2xl flex items-center justify-center mx-auto mb-4">
                 <Zap className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-xl font-semibold mb-2">AI Generation</h3>
@@ -91,7 +91,7 @@ const Index = () => {
 
           <Card className="text-center p-6">
             <CardContent className="pt-6">
-              <div className="w-16 h-16 bg-gradient-to-r from-pink-500 to-red-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-[#ea4335] rounded-2xl flex items-center justify-center mx-auto mb-4">
                 <Target className="w-8 h-8 text-white" />
               </div>
               <h3 className="text-xl font-semibold mb-2">Practice & Improve</h3>
@@ -105,7 +105,7 @@ const Index = () => {
       <section className="bg-white/60 backdrop-blur-sm py-16">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Why Choose StudyAI?</h2>
+            <h2 className="text-3xl font-bold mb-4">Why Choose Scinapse?</h2>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -146,11 +146,11 @@ const Index = () => {
 
       {/* CTA Section */}
       <section className="container mx-auto px-4 py-20">
-        <Card className="bg-gradient-to-r from-blue-600 to-purple-600 text-white border-0">
+        <Card className="bg-gradient-to-r from-[#4285F4] to-[#34A853] text-white border-0">
           <CardContent className="p-12 text-center">
             <h2 className="text-3xl font-bold mb-4">Ready to Ace Your Exams?</h2>
             <p className="text-lg opacity-90 mb-8">
-              Join thousands of students who have improved their exam performance with StudyAI
+              Join thousands of students who have improved their exam performance with Scinapse
             </p>
             <Button size="lg" variant="secondary" className="gap-2" asChild>
               <Link to="/dashboard">
