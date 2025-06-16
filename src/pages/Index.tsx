@@ -41,7 +41,7 @@ const Index = () => {
             Transform Your Study Materials into Practice Questions
           </h1>
           <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-            Upload your PDFs, notes, or past papers and let AI generate personalized questions for better exam prep. 
+            Upload your PDFs, notes, or past papers and let AI generate personalized questions for better exam prep.
             Track your progress and compete with friends!
           </p>
           <div className="flex gap-4 justify-center">
@@ -67,7 +67,7 @@ const Index = () => {
           <h2 className="text-3xl font-bold mb-4">How StudyAI Works</h2>
           <p className="text-gray-600 text-lg">Three simple steps to better exam preparation</p>
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <Card className="text-center p-6">
             <CardContent className="pt-6">
@@ -107,7 +107,7 @@ const Index = () => {
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold mb-4">Why Choose StudyAI?</h2>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="text-center">
               <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center mx-auto mb-3">

@@ -4,19 +4,18 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Zap } from 'lucide-react';
 import UploadSection from '@/components/UploadSection';
-import QuestionGenerator from '@/components/QuestionGenerator';
 
 const NewModule = () => {
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
-  const [generatedQuestions, setGeneratedQuestions] = useState<any[]>([]);
 
   const handleFileUpload = (files: File[]) => {
     setUploadedFiles(prev => [...prev, ...files]);
   };
 
-  const handleQuestionsGenerated = (questions: any[]) => {
-    setGeneratedQuestions(questions);
-  };
+  const handleFilesSubmit = () => {
+    // Handle the submission of uploaded file
+
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100">
@@ -55,25 +54,16 @@ const NewModule = () => {
           </div>
 
           <UploadSection onFileUpload={handleFileUpload} uploadedFiles={uploadedFiles} />
-          
-          {uploadedFiles.length > 0 && (
-            <QuestionGenerator 
-              files={uploadedFiles} 
-              onQuestionsGenerated={handleQuestionsGenerated}
-            />
-          )}
 
-          {generatedQuestions.length > 0 && (
-            <div className="text-center">
-              <h2 className="text-2xl font-bold mb-4">Questions Generated Successfully!</h2>
-              <p className="text-gray-600 mb-6">
-                Your new study module is ready. You can now start practicing with your custom questions.
-              </p>
-              <Button size="lg" asChild>
-                <Link to="/dashboard">Go to Dashboard</Link>
+          {uploadedFiles.length > 0 && (
+            <div className="flex justify-center mt-8">
+              <Button variant="default" onClick={handleFilesSubmit} className="px-6">
+                Submit
               </Button>
             </div>
           )}
+
+
         </div>
       </div>
     </div>
